@@ -9,7 +9,34 @@ import { redirectShortUrl } from "./Controllers/urlController";
 import qrRouter from "./Routes/qrRoutes";
 import urlRouter from "./Routes/urlRoute";
 import helmet from "helmet";
+import { connectRedis } from "./config/redis";
 const app = express();
+
+
+let redisConnection: Promise<void> | null = null;
+
+app.use(async (req, res, next) => {
+    try {
+        if (!redisConnection) {
+            redisConnection = connectRedis().catch((error) => {
+                redisConnection = null;
+                throw error;
+            });
+        }
+
+        await redisConnection;
+        next();
+
+    } catch (error) {
+        console.error("Redis connection failed:", error);
+
+        res.status(503).json({
+            success: false,
+            message: "Service temporarily unavailable"
+        });
+    }
+});
+
 
 app.use(helmet());
 app.use(

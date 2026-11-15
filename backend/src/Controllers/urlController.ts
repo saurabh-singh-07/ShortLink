@@ -243,12 +243,10 @@ export const redirectShortUrl = async (
     });
 }
 
-    console.log("1. Redirect requested:", shortCode);
 
     let url = await getCachedUrl(shortCode);
 
     if (!url) {
-      console.log("2. URL not found in Redis. Checking PostgreSQL...");
 
       const result = await pool.query(
         `SELECT id, original_url, is_active, expires_at
@@ -258,7 +256,6 @@ export const redirectShortUrl = async (
       );
 
       if (result.rows.length === 0) {
-        console.log("URL not found:", shortCode);
         return res.status(404).send("Short URL not found");
       }
 
@@ -273,9 +270,6 @@ export const redirectShortUrl = async (
 
       await cacheUrl(shortCode, url);
     }
-
-    console.log("3. URL found:", url.id);
-
     if (!url.isActive) {
       return res.status(410).send("This URL is inactive");
     }
@@ -284,7 +278,6 @@ export const redirectShortUrl = async (
       return res.status(410).send("This URL has expired");
     }
 
-    // Parse user agent
     const userAgent = req.get("user-agent") || "";
     const parser = new UAParser(userAgent);
 
@@ -292,7 +285,6 @@ export const redirectShortUrl = async (
     const browser = parser.getBrowser();
     const os = parser.getOS();
 
-    console.log("4. Inserting click event...");
 
     // Save click event
     const clickResult = await pool.query(
@@ -309,12 +301,6 @@ export const redirectShortUrl = async (
         os.name || "Unknown",
       ]
     );
-
-    console.log(
-      "5. Click saved successfully:",
-      clickResult.rows[0].id
-    );
-
     return res.redirect(302, url.originalUrl);
 
   } catch (error) {
