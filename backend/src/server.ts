@@ -8,11 +8,10 @@ import googleAuthRouter from "./Routes/googleAuthRoute.js";
 import { redirectShortUrl } from "./Controllers/urlController.js";
 import qrRouter from "./Routes/qrRoutes.js";
 import urlRouter from "./Routes/urlRoute.js";
-import helmet from "helmet";
-import { connectRedis } from "./config/redis.js";
+import * as helmetModule from "helmet";import { connectRedis } from "./config/redis.js";
 const app = express();
 
-
+const helmet = (helmetModule as unknown as { default?: (...args: any[]) => any }).default || (helmetModule as unknown as (...args: any[]) => any);
 let redisConnection: Promise<void> | null = null;
 
 app.use(async (req, res, next) => {
