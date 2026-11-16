@@ -12,6 +12,10 @@
     "dev": "nodemon --exec tsx src/index.ts",
     "build": "tsc"
   },
+  "allowScripts": {
+    "bcrypt": true,
+    "esbuild": true
+  },
   "dependencies": {
     "@types/cookie-parser": "^1.4.10",
     "@types/qrcode": "^1.5.6",
