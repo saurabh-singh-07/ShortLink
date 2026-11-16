@@ -3,13 +3,13 @@ import { Request, Response } from "express";
 import { URL } from "url";
 import { UAParser } from "ua-parser-js";
 
-import { pool } from "../config/db";
-import { generateShortCode } from "../utils/shortCode";
+import { pool } from "../config/db.js";
+import { generateShortCode } from "../utils/shortCode.js";
 import {
     cacheUrl,
     getCachedUrl,
     invalidateUrlCache,
-} from "../utils/urlCache";
+} from "../utils/urlCache.js";
 
 function isValidHttpUrl(value: string): boolean {
     try {

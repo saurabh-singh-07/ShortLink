@@ -1,5 +1,5 @@
-import { pool } from "../../config/db";
-import { generateAccessToken, generateRefreshToken, hashToken, } from "../../utils/token";
+import { pool } from "../../config/db.js";
+import { generateAccessToken, generateRefreshToken, hashToken, } from "../../utils/token.js";
 const COOKIE_NAME = "refreshToken";
 const REFRESH_TOKEN_DAYS = 30;
 const cookieOptions = {

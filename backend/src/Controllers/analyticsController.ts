@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { pool } from "../config/db";
+import { pool } from "../config/db.js";
 
 export const getUrlAnalytics = async (req : Request, res : Response) : Promise<void> => {
     try {

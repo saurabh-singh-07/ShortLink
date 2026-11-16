@@ -4,7 +4,7 @@ import {
   startGoogleOAuth,
   googleCallback,
   exchangeGoogleTicket,
-} from "../Controllers/googleAuthController";
+} from "../Controllers/googleAuthController.js";
 
 const router = Router();
 

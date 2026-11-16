@@ -1,11 +1,11 @@
 import express from 'express';
-import { authMiddleware } from '../Middleware/auth.meddlewate';
-import { getMe } from '../Controllers/authControllers/me';
-import { refreshSession } from '../Controllers/authControllers/refreshSession';
-import { logout, logoutAllSessions } from '../Controllers/authControllers/logout';
-import { register } from '../Controllers/authControllers/register';
-import { login } from '../Controllers/authControllers/login';
-import { loginRateLimit } from '../Middleware/rateLimit.middleware';
+import { authMiddleware } from '../Middleware/auth.meddlewate.js';
+import { getMe } from '../Controllers/authControllers/me.js';
+import { refreshSession } from '../Controllers/authControllers/refreshSession.js';
+import { logout, logoutAllSessions } from '../Controllers/authControllers/logout.js';
+import { register } from '../Controllers/authControllers/register.js';
+import { login } from '../Controllers/authControllers/login.js';
+import { loginRateLimit } from '../Middleware/rateLimit.middleware.js';
 const authRouter = express.Router();
 authRouter.get("/me", authMiddleware, getMe);
 authRouter.post('/refresh', refreshSession);

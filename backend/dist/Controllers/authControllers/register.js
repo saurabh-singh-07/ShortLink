@@ -1,6 +1,6 @@
-import { pool } from "../../config/db";
-import { hashPassword } from "../../utils/password";
-import { generateAccessToken, generateRefreshToken, hashToken } from "../../utils/token";
+import { pool } from "../../config/db.js";
+import { hashPassword } from "../../utils/password.js";
+import { generateAccessToken, generateRefreshToken, hashToken } from "../../utils/token.js";
 export const register = async (req, res) => {
     try {
         const { name, email, password } = req.body;

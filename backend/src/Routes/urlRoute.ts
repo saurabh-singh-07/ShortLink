@@ -4,10 +4,10 @@ import {
     createShortUrl,
     getMyUrls,
     deleteShortUrl,
-} from "../Controllers/urlController";
+} from "../Controllers/urlController.js";
 
-import { authMiddleware } from "../Middleware/auth.meddlewate";
-import { getUrlAnalytics } from "../Controllers/analyticsController";
+import { authMiddleware } from "../Middleware/auth.meddlewate.js";
+import { getUrlAnalytics } from "../Controllers/analyticsController.js";
 
 const urlRouter = Router();
 

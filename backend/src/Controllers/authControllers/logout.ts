@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { pool } from "../../config/db";
-import { hashToken } from "../../utils/token";
+import { pool } from "../../config/db.js";
+import { hashToken } from "../../utils/token.js";
 
 export async function logout (req : Request, res: Response) {
     const refreahToken = req.cookies?.refreahToken;

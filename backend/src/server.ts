@@ -1,15 +1,15 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import { pool } from "./config/db";
-import authRouter from "../src/Routes/authRoute";
+import { pool } from "./config/db.js";
+import authRouter from "../src/Routes/authRoute.js";
 import cookieParser from "cookie-parser";
-import googleAuthRouter from "./Routes/googleAuthRoute";
-import { redirectShortUrl } from "./Controllers/urlController";
-import qrRouter from "./Routes/qrRoutes";
-import urlRouter from "./Routes/urlRoute";
+import googleAuthRouter from "./Routes/googleAuthRoute.js";
+import { redirectShortUrl } from "./Controllers/urlController.js";
+import qrRouter from "./Routes/qrRoutes.js";
+import urlRouter from "./Routes/urlRoute.js";
 import helmet from "helmet";
-import { connectRedis } from "./config/redis";
+import { connectRedis } from "./config/redis.js";
 const app = express();
 
 

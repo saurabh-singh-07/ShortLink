@@ -1,8 +1,8 @@
 import { OAuth2Client } from "google-auth-library";
 import { randomBytes, timingSafeEqual } from "node:crypto";
-import { pool } from "../config/db";
-import redis from "../config/redis";
-import { generateAccessToken, generateRefreshToken, hashToken, } from "../utils/token";
+import { pool } from "../config/db.js";
+import redis from "../config/redis.js";
+import { generateAccessToken, generateRefreshToken, hashToken, } from "../utils/token.js";
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, process.env.GOOGLE_CALLBACK_URL);
 const STATE_COOKIE = "google_oauth_state";
 const REFRESH_COOKIE = "refreshToken";

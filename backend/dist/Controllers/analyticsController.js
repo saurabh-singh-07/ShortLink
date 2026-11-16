@@ -1,4 +1,4 @@
-import { pool } from "../config/db";
+import { pool } from "../config/db.js";
 export const getUrlAnalytics = async (req, res) => {
     try {
         const userId = res.locals.userId;

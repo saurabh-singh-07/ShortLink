@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { OAuth2Client } from "google-auth-library";
 import { randomBytes, timingSafeEqual } from "node:crypto";
-import { pool } from "../config/db";
-import redis from "../config/redis";
+import { pool } from "../config/db.js";
+import redis from "../config/redis.js";
 import {
   generateAccessToken,
   generateRefreshToken,
   hashToken,
-} from "../utils/token";
+} from "../utils/token.js";
 
 const googleClient = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID,

@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { generateQrCode, getMyQrCodes } from "../Controllers/qrController";
-import { authMiddleware } from "../Middleware/auth.meddlewate";
+import { generateQrCode, getMyQrCodes } from "../Controllers/qrController.js";
+import { authMiddleware } from "../Middleware/auth.meddlewate.js";
 const qrRouter = Router();
 
 qrRouter.post("/generate", authMiddleware, generateQrCode);

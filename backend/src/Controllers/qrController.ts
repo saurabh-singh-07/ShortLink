@@ -1,7 +1,7 @@
 
 import { Request, Response } from "express";
 import QRCode from "qrcode";
-import { pool } from "../config/db";
+import { pool } from "../config/db.js";
 
 export const generateQrCode = async (
     req: Request,

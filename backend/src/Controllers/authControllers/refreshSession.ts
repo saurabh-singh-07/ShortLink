@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { pool } from "../../config/db";
+import { pool } from "../../config/db.js";
 import {
   generateAccessToken,
   generateRefreshToken,
   hashToken,
-} from "../../utils/token";
+} from "../../utils/token.js";
 
 const COOKIE_NAME = "refreshToken";
 const REFRESH_TOKEN_DAYS = 30;

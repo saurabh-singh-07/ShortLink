@@ -1,5 +1,5 @@
-import { pool } from "../../config/db";
-import { hashToken } from "../../utils/token";
+import { pool } from "../../config/db.js";
+import { hashToken } from "../../utils/token.js";
 export async function logout(req, res) {
     const refreahToken = req.cookies?.refreahToken;
     try {

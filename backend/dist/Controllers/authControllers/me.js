@@ -1,4 +1,4 @@
-import { pool } from "../../config/db";
+import { pool } from "../../config/db.js";
 export const getMe = async (req, res) => {
     try {
         const userId = res.locals.userId;
