@@ -7,11 +7,10 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "tsc src/server.ts",
-    "server": "nodemon --exec tsx src/server.ts",
-    "dev": "nodemon --exec tsx src/index.ts",
-    "build": "tsc",
-    "dist-start": "node dist/src/index.js"
+  "start": "tsx src/index.ts",
+  "dev": "nodemon --exec tsx src/index.ts",
+  "typecheck": "tsc --noEmit"
+
   },
   "allowScripts": {
     "bcrypt": true,
