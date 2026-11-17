@@ -11,7 +11,7 @@
     "server": "nodemon --exec tsx src/server.ts",
     "dev": "nodemon --exec tsx src/index.ts",
     "build": "tsc",
-    "dist-start" : "node dist/src/index.js"
+    "dist-start": "node dist/src/index.js"
   },
   "allowScripts": {
     "bcrypt": true,
@@ -39,8 +39,6 @@
     "passport-google-oauth20": "^2.0.0",
     "pg": "^8.23.1",
     "qrcode": "^1.5.4",
-    "rate-limit-redis": "^6.0.1",
-    "redis": "^6.3.1",
     "ua-parser-js": "^2.0.10",
     "ws": "^8.23.0"
   },
