@@ -9,10 +9,12 @@ import {
 const COOKIE_NAME = "refreshToken";
 const REFRESH_TOKEN_DAYS = 30;
 
+const isProd = process.env.NODE_ENV === "production";
+
 const cookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "lax" as const,
+  secure: isProd,
+  sameSite: isProd ? ("none" as const) : ("lax" as const),
   path: "/",
 };
 
@@ -100,8 +102,12 @@ export async function refreshSession(req: Request, res: Response) {
       user: userResult.rows[0],
     });
   } catch (error) {
-    await client.query("ROLLBACK");
-    console.error("Refresh session error :", error);
+    try {
+      await client.query("ROLLBACK");
+    } catch (rollbackError) {
+      console.error("Rollback failed:", rollbackError);
+    }
+    console.error("Refresh session error:", error);
 
     return res.status(500).json({
       success: false,
@@ -109,5 +115,5 @@ export async function refreshSession(req: Request, res: Response) {
     });
   } finally {
     client.release();
-  }
+  } 
 }

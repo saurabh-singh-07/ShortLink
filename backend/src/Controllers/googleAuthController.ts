@@ -18,7 +18,7 @@ const googleClient = new OAuth2Client(
 const STATE_COOKIE = "google_oauth_state";
 const REFRESH_COOKIE = "refreshToken";
 
-const frontendUrl = process.env.FRONTEND_URL;
+const frontendUrl = process.env.FRONTEND_URL  || "http://loacalhost:5173";
 
 const stateCookieOptions = {
   httpOnly: true,
@@ -42,13 +42,12 @@ function safeStateMatch(received: string, expected: string) {
 
   return a.length === b.length && timingSafeEqual(a, b);
 }
-
-// GET /api/auth/google
+const google_callback_url = process.env.GOOGLE_CALLBACK_URL || 'http://localhost:3000/api/auth/google/callback'
 export async function startGoogleOAuth(req: Request, res: Response) {
   if (
     !process.env.GOOGLE_CLIENT_ID ||
     !process.env.GOOGLE_CLIENT_SECRET ||
-    !process.env.GOOGLE_CALLBACK_URL
+    !google_callback_url
   ) {
     return res.status(500).json({
       success: false,

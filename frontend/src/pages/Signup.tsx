@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { type RegFormTypes } from "../types/FormTypes";
 import { BsEye } from "react-icons/bs";
 import { FaEyeSlash } from "react-icons/fa";
@@ -19,7 +19,8 @@ function Signup() {
     password: "",
   });
   const [showPassword, setShowPassword] = useState<boolean>(false);
-
+  const navigate = useNavigate();
+  const location = useLocation();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -31,7 +32,8 @@ function Signup() {
       const response = await api.post("/api/auth/register", formData);
       setAuth(response.data?.accessToken, response.data?.user);
       toast.success("registration successfull...")
-      console.log(response);
+      navigate(location.state?.from?.pathname || "/");
+
     } catch (error) {
       console.error("error : ",error);
       toast.error("something wrong, please try again later...");
@@ -39,7 +41,7 @@ function Signup() {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = import.meta.env.VITE_GOOGLE_LOGIN_URL;
+    window.location.href = import.meta.env.VITE_GOOGLE_LOGIN_URL || 'http://localhost:3000/api/auth/google';
   };
   return (
     <section>

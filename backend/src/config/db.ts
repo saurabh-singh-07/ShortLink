@@ -1,20 +1,21 @@
+import dns from "node:dns";
+import net from "node:net";
+import { Pool, neonConfig } from "@neondatabase/serverless";
+import ws from "ws";
 
-import "dotenv/config";
-import { Pool } from "pg";
+dns.setDefaultResultOrder("ipv4first");
+net.setDefaultAutoSelectFamilyAttemptTimeout(10000);
+
+neonConfig.webSocketConstructor = ws;
+
+if (!process.env.DB_URL) {
+  throw new Error("DB_URL environment variable is missing");
+}
+
 export const pool = new Pool({
-  connectionString: process.env.DB_URL,
-  ssl: {
-    rejectUnauthorized: false, // Required for Neon SSL connections in serverless
-  },
-  max: 10, // Limit pool size per serverless instance
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 5000,
+  connectionString: process.env.DB_URL.trim(),
 });
 
-pool.on("connect", () => {
-  console.log("PostgreSQL connection established");
-});
-
-pool.on("error", (error) => {
-  console.error("PostgreSQL pool error:", error);
+pool.on("error", (err:any) => {
+  console.error("Unexpected Neon pool error:", err);
 });

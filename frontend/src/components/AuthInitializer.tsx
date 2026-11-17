@@ -11,7 +11,7 @@ export default function AuthInitializer() {
     const refreshAuth = async () => {
       try {
         const response = await axios.post(
-          import.meta.env.VITE_GOOGLE_REFRESH_URL,
+          import.meta.env.VITE_GOOGLE_REFRESH_URL || 'http://localhost:3000/api/auth/refresh',
           {},
           { withCredentials: true }
         );

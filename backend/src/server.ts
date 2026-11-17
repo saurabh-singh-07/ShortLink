@@ -1,78 +1,91 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import { pool } from "./config/db.js";
-import authRouter from "../src/Routes/authRoute.js";
+import * as helmetModule from "helmet";
 import cookieParser from "cookie-parser";
+import { pool } from "./config/db.js";
+import { connectRedis } from "./config/redis.js";
+import authRouter from "./Routes/authRoute.js";
 import googleAuthRouter from "./Routes/googleAuthRoute.js";
 import { redirectShortUrl } from "./Controllers/urlController.js";
 import qrRouter from "./Routes/qrRoutes.js";
 import urlRouter from "./Routes/urlRoute.js";
-import * as helmetModule from "helmet";import { connectRedis } from "./config/redis.js";
+
 const app = express();
 
-const helmet = (helmetModule as unknown as { default?: (...args: any[]) => any }).default || (helmetModule as unknown as (...args: any[]) => any);
-let redisConnection: Promise<void> | null = null;
+const helmet =
+  (helmetModule as unknown as { default?: (...args: any[]) => any }).default ||
+  (helmetModule as unknown as (...args: any[]) => any);
 
-app.use(async (req, res, next) => {
-    try {
-        if (!redisConnection) {
-            redisConnection = connectRedis().catch((error) => {
-                redisConnection = null;
-                throw error;
-            });
-        }
-
-        await redisConnection;
-        next();
-
-    } catch (error) {
-        console.error("Redis connection failed:", error);
-
-        res.status(503).json({
-            success: false,
-            message: "Service temporarily unavailable"
-        });
-    }
-});
-
+const allowedOrigin = (
+  process.env.FRONTEND_URL || "http://localhost:5173"
+).replace(/\/$/, "");
 
 app.use(helmet());
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: allowedOrigin,
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
+
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 app.use(cookieParser());
+
+let redisConnection: Promise<void> | null = null;
+
+app.use(async (req, res, next) => {
+  if (req.method === "OPTIONS") return next();
+
+  try {
+    if (!redisConnection) {
+      redisConnection = connectRedis().catch((error) => {
+        redisConnection = null;
+        throw error;
+      });
+    }
+
+    await redisConnection;
+    next();
+  } catch (error) {
+    console.error("Redis connection failed:", error);
+    return res.status(503).json({
+      success: false,
+      message: "Service temporarily unavailable",
+    });
+  }
+});
+
 app.use("/api/qr", qrRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/auth", googleAuthRouter);
 app.use("/api/urls", urlRouter);
+
 app.get("/", (req, res) => {
-  res.send("sever live");
+  res.send("server live");
 });
+
 app.get("/api/test", async (req, res) => {
   try {
-    const result = await pool.query(`SELECT
-        current_database(),
-        current_user,
-        current_schema()
-`);
+    const result = await pool.query(`
+      SELECT current_database(), current_user, current_schema()
+    `);
     res.json({
       success: true,
-      time: result
+      db: result.rows[0],
     });
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    console.error("DB test error:", error);
     return res.status(500).json({
       success: false,
-      message: " Database connection failed",
+      message: "Database connection failed",
+      error: error.message,
     });
   }
 });
+
 app.get("/:shortCode", redirectShortUrl);
+
 export default app;

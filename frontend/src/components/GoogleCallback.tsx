@@ -27,7 +27,7 @@ export default function GoogleCallback() {
 
             try {
                 const response = await fetch(
-                    import.meta.env.VITE_GOOGLE_EXCHANGE_URL,
+                    import.meta.env.VITE_GOOGLE_EXCHANGE_URL || 'http://localhost:3000/api/auth/google/exchange',
                     {
                         method: "POST",
                         credentials: "include",
