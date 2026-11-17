@@ -1,6 +1,8 @@
 // import "dotenv/config";
 // import { connectRedis } from "./config/redis.js";
 
+import app from "../src/server.js";
+
 // const PORT = Number(process.env.PORT) || 3000;
 
 // async function startServer() {
@@ -20,6 +22,5 @@
 // }
 
 // startServer();
-import app from "../src/server.js";
 
 export default app;
