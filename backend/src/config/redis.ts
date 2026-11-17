@@ -1,31 +1,12 @@
-import { createClient } from "redis";
+import { Redis } from "@upstash/redis";
 
-const redis = createClient({
-  url: process.env.REDIS_URL,
+export const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL!,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
 });
-
-redis.on("error", (err) => {
-  console.error("Redis Client Error:", err);
-});
-
-let connectPromise: Promise<void> | null = null;
 
 export async function connectRedis(): Promise<void> {
-  if (redis.isOpen) return;
-
-  if (!connectPromise) {
-    connectPromise = redis
-      .connect()
-      .then(() => {
-        console.log("Redis connected...");
-      })
-      .catch((err) => {
-        connectPromise = null;
-        throw err;
-      });
-  }
-
-  return connectPromise;
+  return;
 }
 
 export default redis;
