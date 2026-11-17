@@ -1,15 +1,10 @@
-import { createClient } from "redis";
-const redis = createClient({
-    url: process.env.REDIS_URL,
+import { Redis } from "@upstash/redis";
+export const redis = new Redis({
+    url: process.env.UPSTASH_REDIS_REST_URL,
+    token: process.env.UPSTASH_REDIS_REST_TOKEN,
 });
-redis.on("error", (error) => {
-    console.error("Redis Error:", error);
-});
-export const connectRedis = async () => {
-    if (!redis.isOpen) {
-        await redis.connect();
-    }
-    console.log("Redis connected...");
-};
+export async function connectRedis() {
+    return;
+}
 export default redis;
 //# sourceMappingURL=redis.js.map

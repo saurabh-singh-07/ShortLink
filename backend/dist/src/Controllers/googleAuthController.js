@@ -158,7 +158,7 @@ export async function googleCallback(req, res) {
         committed = true;
         // 4. One-time ticket: expires in 60 seconds.
         const ticket = randomBytes(32).toString("hex");
-        const stored = await redis.set(`oauth:google:ticket:${ticket}`, JSON.stringify({ accessToken, user }), { EX: 60, NX: true });
+        const stored = await redis.set(`oauth:google:ticket:${ticket}`, JSON.stringify({ accessToken, user }), { ex: 60, nx: true });
         if (stored !== "OK") {
             throw new Error("Could not store Google login ticket");
         }
@@ -203,7 +203,7 @@ export async function exchangeGoogleTicket(req, res) {
     }
     try {
         // GETDEL makes the ticket single-use.
-        const stored = await redis.getDel(`oauth:google:ticket:${code}`);
+        const stored = await redis.getdel(`oauth:google:ticket:${code}`);
         if (!stored) {
             return res.status(401).json({
                 success: false,

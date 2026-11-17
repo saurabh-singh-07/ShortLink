@@ -17,10 +17,9 @@ export function getUrlCacheKey(shortCode : string) : string {
 
 export async function getCachedUrl (shortCode : string): Promise<CachedUrl | null> {
     try {
-        const cached = await redis.get(getUrlCacheKey(shortCode));
-
-        if(!cached) return null;
-        const data:unknown = JSON.parse(cached);
+        const cached = await redis.get<unknown>(shortCode);
+if (!cached) return null;
+const data: unknown = typeof cached === "string" ? JSON.parse(cached) : cached;
 
         if(typeof data !== "object" || 
             data === null || 
@@ -59,8 +58,7 @@ export async function cacheUrl (
     try {
         await redis.set(getUrlCacheKey(shortCode),
         JSON.stringify(data),
-        {EX : ttl}
-    )
+{ ex: ttl }    )
     } catch (error) {
         console.error("Redis cache write error :" , error);
     }

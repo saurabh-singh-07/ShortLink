@@ -241,7 +241,7 @@ export async function googleCallback(req: Request, res: Response) {
     const stored = await redis.set(
       `oauth:google:ticket:${ticket}`,
       JSON.stringify({ accessToken, user }),
-      { EX: 60, NX: true },
+{ ex: 60, nx: true },
     );
 
     if (stored !== "OK") {
@@ -297,8 +297,7 @@ export async function exchangeGoogleTicket(req: Request, res: Response) {
 
   try {
     // GETDEL makes the ticket single-use.
-    const stored = await redis.getDel(`oauth:google:ticket:${code}`);
-
+const stored = await redis.getdel<string>(`oauth:google:ticket:${code}`);
     if (!stored) {
       return res.status(401).json({
         success: false,
