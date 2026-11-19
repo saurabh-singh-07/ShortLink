@@ -20,18 +20,20 @@ const REFRESH_COOKIE = "refreshToken";
 
 const frontendUrl = process.env.FRONTEND_URL  || "http://loacalhost:5173";
 
+const isProd = process.env.NODE_ENV === "production";
+
 const stateCookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "lax" as const,
+  secure: isProd,
+  sameSite: isProd ? ("none" as const) : ("lax" as const),
   maxAge: 10 * 60 * 1000,
   path: "/api/auth/google/callback",
 };
 
 const refreshCookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "lax" as const,
+  secure: isProd,
+  sameSite: isProd ? ("none" as const) : ("lax" as const),
   maxAge: 30 * 24 * 60 * 60 * 1000,
   path: "/",
 };

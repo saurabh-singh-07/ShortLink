@@ -62,12 +62,15 @@ export const login = async (req : Request, res : Response) => {
         `,[user.id, refreahTokenHash]
     );
 
-    res.cookie("refreshToken", refreshToken, {
-        httpOnly : true,
-        secure : process.env.NODE_ENV === 'production',
-        sameSite : "lax",
-        maxAge : 30 * 24 * 60 * 60 * 1000,
-    })
+    const isProd = process.env.NODE_ENV === "production";
+
+res.cookie("refreshToken", refreshToken, {
+  httpOnly: true,
+  secure: isProd,                     
+  sameSite: isProd ? "none" : "lax",  
+  path: "/",
+  maxAge: 30 * 24 * 60 * 60 * 1000,
+});
 
     delete user.password_hash;
 
